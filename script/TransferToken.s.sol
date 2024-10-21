@@ -5,27 +5,26 @@ pragma solidity ^0.8.20;
 import {Script} from "forge-std/Script.sol";
 import {TransferToken} from "../src/TransferToken.sol";
 import {Token} from "../src/Token.sol";
-import {SignatureVerifier} from "../src/SignatureVerifier.sol";
+import {MultiSignature} from "../src/MultiSignature.sol";
 
 contract TransferTokenDeploy is Script {
     TransferToken public transferToken;
     Token public token;
-    SignatureVerifier public signatureVerifier;
+    MultiSignature public multisignature;
+    address[] exmpleAddress = [0xAa924fE3E0277d1C5B508C476ce546377E202a3e];
 
-    address correctAddress = vm.envAddress("CORRECT_VERIFIER_ADDRESS");
-
-    function run() external returns (TransferToken, Token, SignatureVerifier) {
+    function run() external returns (TransferToken, Token, MultiSignature) {
         vm.startBroadcast();
 
-        signatureVerifier = new SignatureVerifier(correctAddress);
+        multisignature = new MultiSignature(exmpleAddress, 1);
         token = new Token();
         transferToken = new TransferToken(
             address(token),
-            address(signatureVerifier)
+            address(multisignature)
         );
 
         vm.stopBroadcast();
 
-        return (transferToken, token, signatureVerifier);
+        return (transferToken, token, multisignature);
     }
 }
