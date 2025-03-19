@@ -1,4 +1,4 @@
-##Introduce
+## Introduce
 The contract part of a dapp that generates NFTs based on comic character popularity voting
 
 ## Foundry
